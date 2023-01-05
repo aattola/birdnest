@@ -209,3 +209,4 @@ dist
 .pnp.*
 
 /.idea/
+/build/

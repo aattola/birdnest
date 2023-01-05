@@ -1,6 +1,4 @@
-export interface PilotResponse {
-  pilot: Pilot
-}
+export type PilotResponse = Pilot
 
 export interface Pilot {
   pilotId: string

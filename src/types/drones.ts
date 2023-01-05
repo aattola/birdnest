@@ -1,3 +1,5 @@
+import { Pilot } from './pilots'
+
 export interface DronesReport {
   report: Report
 }
@@ -33,4 +35,5 @@ export interface Drone {
 
 export interface DroneViolation extends Drone {
   distance: number
+  pilot?: Pilot
 }
