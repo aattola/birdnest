@@ -1,7 +1,8 @@
 import fastify from 'fastify'
 import ws from 'fastify-socket.io'
-import config from './plugins/config.js'
-import routes from './routes/index.js'
+import cors from '@fastify/cors'
+import config from './plugins/config'
+import routes from './routes'
 
 const server = fastify({
   ajv: {
@@ -16,9 +17,17 @@ const server = fastify({
   },
 })
 
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+}
+
+await server.register(cors, corsOptions)
 await server.register(config)
 await server.register(routes)
-await server.register(ws)
+await server.register(ws, {
+  cors: corsOptions,
+})
 await server.ready()
 
 export default server

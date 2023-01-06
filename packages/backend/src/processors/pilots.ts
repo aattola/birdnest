@@ -27,7 +27,7 @@ export async function getPilotsForViolations(
   const pilots = await Promise.all(
     violations.map(async (violation) => {
       const pilot = await getPilot(violation.serialNumber)
-      return { ...violation, pilot }
+      return { ...violation, pilot, timestamp: Date.now() }
     })
   )
 

@@ -10,7 +10,28 @@ async function getViolations(drones: Drone[]) {
   const violating = getViolatingDrones(drones)
   const violations = await getPilotsForViolations(violating)
 
-  return violations
+  violations.forEach((violation) => {
+    const cachedViolation = cache.get<DroneViolation>(violation.serialNumber)
+    if (cachedViolation) {
+      // check if curr violation is closer
+      if (cachedViolation.distance > violation.distance) {
+        // new violation is closer so set it in cache
+        cache.set(violation.serialNumber, violation)
+      }
+
+      return
+    }
+
+    // if not already cached set to cache
+    cache.set(violation.serialNumber, violation)
+  })
+
+  const { data } = cache
+  const keys = Object.keys(data)
+
+  const violationsToSend = keys.map((key) => data[key].v).reverse()
+
+  return violationsToSend
 }
 
 const routes: FastifyPluginAsync = async (server) => {
@@ -31,31 +52,10 @@ const routes: FastifyPluginAsync = async (server) => {
     const dronesReport = await getDrones()
     const violations = await getViolations(dronesReport.report.capture.drone)
 
-    violations.forEach((violation) => {
-      const cachedViolation = cache.get<DroneViolation>(violation.serialNumber)
-      if (cachedViolation) {
-        // check if curr violation is closer
-        if (cachedViolation.distance > violation.distance) {
-          // new violation is closer so set it in cache
-          cache.set(violation.serialNumber, violation)
-        }
-
-        return
-      }
-
-      // if not already cached set to cache
-      cache.set(violation.serialNumber, violation)
-    })
-
-    const { data } = cache
-    const keys = Object.keys(data)
-
-    const violationsToSend = keys.map((key) => data[key].v)
-
     server.io.emit('violating', {
       drones: dronesReport.report.capture.drone,
-      violations: violationsToSend,
+      violations,
     })
-  }, 1000)
+  }, 2000)
 }
 export default routes

@@ -1,5 +1,5 @@
 {
-  "name": "fastify-typescript-starter",
+  "name": "monadikuikka",
   "version": "1.5.0",
   "description": "Node.js boilerplate using fastify & TypeScript",
   "type": "module",
@@ -10,7 +10,7 @@
     "build": "esbuild `find src \\( -name '*.ts' \\)` --platform=node --outdir=build --resolve-extensions=.js",
     "build:docker:prod": "docker build . -t my-fastify-app --build-arg APP_ENV=production",
     "start": "node build",
-    "dev": "tsx watch src .env | pino-pretty --colorize",
+    "dev": "tsx watch packages/backend/src .env | pino-pretty --colorize",
     "pretest": "npm run build",
     "test": "vitest",
     "test:watch": "vitest -w"
@@ -19,6 +19,7 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@fastify/cors": "^8.2.0",
     "@fastify/websocket": "^7.1.1",
     "@sinclair/typebox": "^0.23.5",
     "@types/ws": "^8.5.4",

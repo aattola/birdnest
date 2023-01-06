@@ -36,4 +36,5 @@ export interface Drone {
 export interface DroneViolation extends Drone {
   distance: number
   pilot?: Pilot
+  timestamp: number
 }
