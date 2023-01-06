@@ -4,10 +4,10 @@ import NodeCache from 'node-cache'
 import { Pilot, PilotResponse } from '../types/pilots'
 import { DroneViolation } from '../types/drones'
 
-// 5 Minute expiration check interval and max 5000 in cache
-const cache = new NodeCache({ stdTTL: 60 * 5 })
+// 12 hour cache
+const cache = new NodeCache({ stdTTL: 60 * 60 * 12 })
 
-// gets pilot and caches it for 5 minutes
+// gets pilot and caches it for 12 hours
 export async function getPilot(serialNumber: string): Promise<Pilot> {
   const pilot = cache.get<Pilot>(serialNumber)
   if (pilot) return pilot
@@ -15,7 +15,9 @@ export async function getPilot(serialNumber: string): Promise<Pilot> {
   const resp = await axios.get<PilotResponse>(
     `https://assignments.reaktor.com/birdnest/pilots/${serialNumber}`
   )
-  if (resp.status !== 200) throw new Error('Failed to get pilot')
+  if (resp.status !== 200) throw new Error(resp.statusText)
+
+  console.log('Pilot', resp.headers['x-ratelimit-remaining'])
 
   cache.set(serialNumber, resp.data)
   return resp.data

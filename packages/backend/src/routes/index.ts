@@ -3,11 +3,34 @@ import { getClosestViolation, getDrones, getViolatingDrones } from '../processor
 import { getPilotsForViolations } from '../processors/pilots'
 import { Drone } from '../types/drones'
 
+function sleep(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
 let timeout = 2000
 
 async function getViolations(drones: Drone[]) {
   const violating = getViolatingDrones(drones)
-  const violations = await getPilotsForViolations(violating)
+  let violations = await getPilotsForViolations(violating).catch((err) => {
+    console.log('getPilotForViolations error')
+    return null
+  })
+
+  if (!violations) {
+    await sleep(500)
+    violations = await getPilotsForViolations(violating).catch((err) => {
+      console.log('getPilotForViolations error again something broke badly', err)
+      return null
+    })
+  }
+
+  if (!violations) {
+    console.log('Returned empty array')
+    return []
+  }
+
   return getClosestViolation(violations)
 }
 
