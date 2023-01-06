@@ -3,15 +3,22 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "lib": ["esnext"],
+    "lib": ["esnext", "dom"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "outDir": "build",
-    "baseUrl": "src",
     "skipLibCheck": true,
     "strict": true,
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@frontend/*": ["packages/frontend/*"],
+      "@backend/*": ["packages/backend/src/*"]
+    }
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "include": [
+    "packages/backend/src/**/*.ts",
+    "packages/backend/tests/**/*.ts", "packages/frontend/src/**/*.tsx"],
   "exclude": ["node_modules"]
 }
