@@ -6,10 +6,9 @@ import { intlFormatDistance } from 'date-fns'
 import './App.css'
 import type { DroneViolation } from '@backend/types/drones'
 
-const socket = io('http://localhost:3000')
+const socket = io('https://monadikuikka-backend.jeffe.co')
 
 function App() {
-  const [count, setCount] = useState(0)
   const [violations, setViolations] = useState<DroneViolation[]>([])
 
   useEffect(() => {
