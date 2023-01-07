@@ -11,6 +11,8 @@ RUN yarn install || \
       cat yarn-error.log; \
     fi) && false)
 
+RUN yarn add esbuild
+
 COPY . .
 
 RUN yarn build
