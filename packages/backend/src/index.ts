@@ -5,6 +5,6 @@ process.on('unhandledRejection', (err) => {
   process.exit(1)
 })
 
-const port = +server.config.API_PORT
+const port = +process.env.PORT! || +server.config.API_PORT
 const host = server.config.API_HOST
 await server.listen({ host, port })
