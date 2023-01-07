@@ -1,14 +1,13 @@
 {
   "name": "monadikuikka",
   "version": "1.5.0",
-  "description": "Node.js boilerplate using fastify & TypeScript",
+  "description": "Reaktor",
   "type": "module",
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check:types": "tsc --noEmit",
-    "build": "esbuild `find src \\( -name '*.ts' \\)` --platform=node --outdir=build --resolve-extensions=.js",
-    "build:docker:prod": "docker build . -t my-fastify-app --build-arg APP_ENV=production",
+    "build": "esbuild `find packages/backend/src \\( -name '*.ts' \\)` --platform=node --outdir=build --resolve-extensions=.js",
     "start": "node build",
     "dev": "tsx watch packages/backend/src .env | pino-pretty --colorize",
     "pretest": "npm run build",
@@ -16,7 +15,7 @@
     "test:watch": "vitest -w"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@fastify/cors": "^8.2.0",
