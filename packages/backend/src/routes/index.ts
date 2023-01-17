@@ -46,13 +46,11 @@ const routes: FastifyPluginAsync = async (server) => {
   console.log('Running')
 
   setInterval(async () => {
-    const sockets = await server.io.fetchSockets()
-    if (sockets.length <= 0) return
-
-    console.log('interval?')
+    // const sockets = await server.io.fetchSockets()
+    // if (sockets.length <= 0) return
 
     const dronesReport = await getDrones().catch((err) => {
-      console.error('Get drone virhe')
+      console.error('Get drone error')
       // Exponential(like) backoff for getting drones
       timeout *= 2
 
